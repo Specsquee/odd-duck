@@ -3,7 +3,7 @@
 // ----- Global Variables -----
 
 let interestingStuff = [];
-let votingRounds = 15;
+let votingRounds = 25;
 
 // ----- DOM Windows -----
 
@@ -21,7 +21,6 @@ function Product(name, imgExtension = 'jpg') {
   this.img = `img/${name}.${imgExtension}`;
   this.votes = 0;
   this.views = 0;
-// interestingStuff.push(this);
 }
 
 // ----- Helper Functions -----
@@ -37,16 +36,13 @@ function renderProduct() {
 
   console.log(interestingStuff);
 
-  while (productOneIndex === productTwoIndex || productTwoIndex === productThreeIndex || productOneIndex === productThreeIndex){
+  while (productOneIndex === productTwoIndex || productTwoIndex === productThreeIndex || productOneIndex === productThreeIndex) {
     productOneIndex = randomArray();
     productTwoIndex = randomArray();
+    productThreeIndex = randomArray();
   }
-  // console.log(typeof productOneIndex, productTwoIndex, productThreeIndex);
-  // console.log(typeof interestingStuff[productOneIndex]).img;
 
   productOne.src = interestingStuff[productOneIndex].img;
-  console.log(typeof interestingStuff[productOneIndex]).img;
-  // console.log(productOne.src);
   productTwo.src = interestingStuff[productTwoIndex].img;
   productThree.src = interestingStuff[productThreeIndex].img;
 
@@ -75,18 +71,20 @@ function handleClick(event) {
     }
   }
 
+  renderProduct();
+
   votingRounds--;
 
-  renderProduct();
+  console.log(votingRounds);
 
   if (votingRounds === 0) {
     imageHolder.removeEventListener('click', handleClick);
   }
 }
 
-function handleShowResults(){
-  if(votingRounds === 0){
-    for(let i = 0; i < interestingStuff.length; i++){
+function handleShowResults() {
+  if (votingRounds === 0) {
+    for (let i = 0; i < interestingStuff.length; i++) {
       let liElem = document.createElement('li');
       liElem.textContent = `${interestingStuff[i].name} - views: ${interestingStuff[i].views} & votes: ${interestingStuff[i].votes}`;
       resultsShow.appendChild(liElem);
@@ -119,11 +117,7 @@ let wineGlass = new Product('wine-glass');
 
 interestingStuff.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogDuck, dragon, pen, petSweet, scissors, shark, sweep, tauntaun, unicorn, waterCan, wineGlass);
 
-
 renderProduct();
 
 imageHolder.addEventListener('click', handleClick);
-resultsShow.addEventListener('click', handleShowResults);
-productOne.addEventListener('click', handleClick);
-productTwo.addEventListener('click', handleClick);
-productThree.addEventListener('click', handleClick);
+showStats.addEventListener('click', handleShowResults);
