@@ -12,7 +12,8 @@ let productOne = document.getElementById('productOne');
 let productTwo = document.getElementById('productTwo');
 let productThree = document.getElementById('productThree');
 let showStats = document.getElementById('show-stats');
-let resultsShow = document.getElementById('results');
+// let resultsShow = document.getElementById('results');
+let canvasElem = document.getElementById('chart');
 
 // ----- Constructor Functions -----
 
@@ -29,18 +30,30 @@ function randomArray() {
   return Math.floor(Math.random() * interestingStuff.length);
 }
 
+let randArray = [];
+let noRepeat = [0 , 0 , 0];
 function renderProduct() {
-  let productOneIndex = randomArray();
-  let productTwoIndex = randomArray();
-  let productThreeIndex = randomArray();
 
-  console.log(interestingStuff);
-
-  while (productOneIndex === productTwoIndex || productTwoIndex === productThreeIndex || productOneIndex === productThreeIndex) {
-    productOneIndex = randomArray();
-    productTwoIndex = randomArray();
-    productThreeIndex = randomArray();
+  while (randArray.length < 3) {
+    let randoNum = randomArray();
+    if (!randArray.includes(randoNum) && !noRepeat.includes(randoNum)) {
+      randArray.push(randoNum);
+    }
   }
+
+  // console.log(interestingStuff);
+
+  // while (productOneIndex === productTwoIndex || productTwoIndex === productThreeIndex || productOneIndex === productThreeIndex)
+  let productOneIndex = randArray.pop();
+  let productTwoIndex = randArray.pop();
+  let productThreeIndex = randArray.pop();
+  noRepeat.pop();
+  noRepeat.pop();
+  noRepeat.pop();
+  noRepeat.push(productOneIndex);
+  noRepeat.push(productTwoIndex);
+  noRepeat.push(productThreeIndex);
+
 
   productOne.src = interestingStuff[productOneIndex].img;
   productTwo.src = interestingStuff[productTwoIndex].img;
@@ -58,6 +71,43 @@ function renderProduct() {
   interestingStuff[productTwoIndex].views++;
   interestingStuff[productThreeIndex].views++;
 
+}
+
+function renderChart() {
+  let productNames = [];
+  let productVotes = [];
+  let productViews = [];
+
+  for (let i = 0; i < interestingStuff.length; i++) {
+    productNames.push(interestingStuff[i].name);
+    productVotes.push(interestingStuff[i].votes);
+    productViews.push(interestingStuff[i].views);
+  }
+
+  let chartObj = {
+    type: 'bar',
+    data: {
+      labels: productNames,
+      datasets: [{
+        label: '# of Votes',
+        data: productVotes,
+        borderWidth: 1
+      },
+      {
+        label: '# of Views!',
+        data: productViews,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  };
+  new Chart(canvasElem, chartObj);
 }
 
 // ----- Event Handlers -----
@@ -84,12 +134,13 @@ function handleClick(event) {
 
 function handleShowResults() {
   if (votingRounds === 0) {
-    for (let i = 0; i < interestingStuff.length; i++) {
-      let liElem = document.createElement('li');
-      liElem.textContent = `${interestingStuff[i].name} - views: ${interestingStuff[i].views} & votes: ${interestingStuff[i].votes}`;
-      resultsShow.appendChild(liElem);
-    }
-    showStats.removeEventListener('click', handleShowResults);
+    renderChart();
+    // for (let i = 0; i < interestingStuff.length; i++) {
+    //   let liElem = document.createElement('li');
+    //   liElem.textContent = `${interestingStuff[i].name} - views: ${interestingStuff[i].views} & votes: ${interestingStuff[i].votes}`;
+    //   resultsShow.appendChild(liElem);
+    // }
+    // showStats.removeEventListener('click', handleShowResults);
   }
 }
 
