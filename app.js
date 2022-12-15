@@ -31,7 +31,7 @@ function randomArray() {
 }
 
 let randArray = [];
-let noRepeat = [0 , 0 , 0];
+let noRepeat = [0, 0, 0];
 function renderProduct() {
 
   while (randArray.length < 3) {
@@ -129,44 +129,53 @@ function handleClick(event) {
 
   if (votingRounds === 0) {
     imageHolder.removeEventListener('click', handleClick);
+
+    let productString = JSON.stringify(interestingStuff);
+    console.log('Woot Woot', productString);
+
+    localStorage.setItem('interestingStuff', productString);
   }
 }
 
 function handleShowResults() {
   if (votingRounds === 0) {
     renderChart();
-    // for (let i = 0; i < interestingStuff.length; i++) {
-    //   let liElem = document.createElement('li');
-    //   liElem.textContent = `${interestingStuff[i].name} - views: ${interestingStuff[i].views} & votes: ${interestingStuff[i].votes}`;
-    //   resultsShow.appendChild(liElem);
-    // }
-    // showStats.removeEventListener('click', handleShowResults);
   }
 }
 
 // ----- Executables -----
 
-let bag = new Product('bag');
-let banana = new Product('banana');
-let bathroom = new Product('bathroom');
-let boots = new Product('boots');
-let breakfast = new Product('breakfast');
-let bubblegum = new Product('bubblegum');
-let chair = new Product('chair');
-let cthulhu = new Product('cthulhu');
-let dogDuck = new Product('dog-duck');
-let dragon = new Product('dragon');
-let pen = new Product('pen');
-let petSweet = new Product('pet-sweep');
-let scissors = new Product('scissors');
-let shark = new Product('shark');
-let sweep = new Product('sweep', 'png');
-let tauntaun = new Product('tauntaun');
-let unicorn = new Product('unicorn');
-let waterCan = new Product('water-can');
-let wineGlass = new Product('wine-glass');
+let productGrab = localStorage.getItem('interestingStuff');
 
-interestingStuff.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogDuck, dragon, pen, petSweet, scissors, shark, sweep, tauntaun, unicorn, waterCan, wineGlass);
+let productParse = JSON.parse(productGrab);
+console.log('Stuff parsed');
+
+if (productGrab) {
+  interestingStuff = productParse;
+} else {
+
+  let bag = new Product('bag');
+  let banana = new Product('banana');
+  let bathroom = new Product('bathroom');
+  let boots = new Product('boots');
+  let breakfast = new Product('breakfast');
+  let bubblegum = new Product('bubblegum');
+  let chair = new Product('chair');
+  let cthulhu = new Product('cthulhu');
+  let dogDuck = new Product('dog-duck');
+  let dragon = new Product('dragon');
+  let pen = new Product('pen');
+  let petSweet = new Product('pet-sweep');
+  let scissors = new Product('scissors');
+  let shark = new Product('shark');
+  let sweep = new Product('sweep', 'png');
+  let tauntaun = new Product('tauntaun');
+  let unicorn = new Product('unicorn');
+  let waterCan = new Product('water-can');
+  let wineGlass = new Product('wine-glass');
+
+  interestingStuff.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogDuck, dragon, pen, petSweet, scissors, shark, sweep, tauntaun, unicorn, waterCan, wineGlass);
+}
 
 renderProduct();
 
