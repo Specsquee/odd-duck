@@ -12,7 +12,6 @@ let productOne = document.getElementById('productOne');
 let productTwo = document.getElementById('productTwo');
 let productThree = document.getElementById('productThree');
 let showStats = document.getElementById('show-stats');
-// let resultsShow = document.getElementById('results');
 let canvasElem = document.getElementById('chart');
 
 // ----- Constructor Functions -----
@@ -41,9 +40,6 @@ function renderProduct() {
     }
   }
 
-  // console.log(interestingStuff);
-
-  // while (productOneIndex === productTwoIndex || productTwoIndex === productThreeIndex || productOneIndex === productThreeIndex)
   let productOneIndex = randArray.pop();
   let productTwoIndex = randArray.pop();
   let productThreeIndex = randArray.pop();
